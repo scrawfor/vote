@@ -50,22 +50,6 @@ async function fetchAndUpdate() {
 			count = 0;
 			fetchAndUpdate();
 		}, 10000);
-		// exec(
-		// 	'powershell -ExecutionPolicy Bypass -File "./random-mullvad.ps1"',
-		// 	(err, stdout, stderr) => {
-		// 		if (err) {
-		// 			console.error("Error running random-mullvad.ps1:", err);
-		// 		} else {
-		// 			//console.log(stdout);
-		// 		}
-
-		// 		console.log("Waiting 5 seconds before restarting...");
-		// 		setTimeout(() => {
-		// 			count = 0;
-		// 			fetchAndUpdate();
-		// 		}, 10000);
-		// 	},
-		// );
 	}
 }
 
@@ -82,41 +66,6 @@ async function updateMullvad() {
 	await new Promise((resolve) => setTimeout(resolve, 2_000));
 	const newVPN = execSync("mullvad status", { encoding: "utf-8" });
 	console.log("New VPN:", newVPN);
-
-	// const relays = output
-	// 	.split("\n")
-	// 	.filter((line) => /^[a-z]{2}\s/.test(line))
-	// 	.map((line) => {
-	// 		const parts = line.split(/\s+/);
-	// 		return {
-	// 			country: parts[0],
-	// 			city: parts[1],
-	// 		};
-	// 	});
-
-	// console.log({ relays, output });
-
-	// // Pick a random relay
-	// const randomRelay = relays[Math.floor(Math.random() * relays.length)];
-
-	// console.log(
-	// 	`Random relay selected: ${randomRelay.country} ${randomRelay.city}`,
-	// );
-
-	// // Set the relay location
-	// execSync(
-	// 	`mullvad relay set location ${randomRelay.country} ${randomRelay.city}`,
-	// 	{ stdio: "inherit" },
-	// );
-
-	// // Reconnect
-	// execSync("mullvad disconnect", { stdio: "inherit" });
-	// setTimeout(() => {
-	// 	execSync("mullvad connect", { stdio: "inherit" });
-
-	// 	// Show status
-	// 	execSync("mullvad status", { stdio: "inherit" });
-	// }, 1000);
 }
 
 fetchAndUpdate();
