@@ -1,7 +1,7 @@
 import { exec, execSync } from "child_process";
 
 let count = 0;
-const maxCalls = 25;
+const maxCalls = 30;
 
 async function fetchAndUpdate() {
 	try {
@@ -41,15 +41,13 @@ async function fetchAndUpdate() {
 	count++;
 
 	if (count < maxCalls) {
-		setTimeout(fetchAndUpdate, 800);
+		setTimeout(fetchAndUpdate, 200);
 	} else {
 		console.log("Reached maximum calls. Updating VPN.");
 
-		updateMullvad();
-		setTimeout(() => {
-			count = 0;
-			fetchAndUpdate();
-		}, 10000);
+		await updateMullvad();
+		count = 0;
+		fetchAndUpdate();
 	}
 }
 
@@ -57,13 +55,16 @@ async function updateMullvad() {
 	// Get all relay groups from Mullvad
 	console.log("Disconnecting VPN");
 	execSync("mullvad disconnect");
-	await new Promise((resolve) => setTimeout(resolve, 2_000));
+	await new Promise((resolve) => setTimeout(resolve, 750));
+
 	console.log("Updating Location VPN");
-	execSync("mullvad relay set location any");
-	await new Promise((resolve) => setTimeout(resolve, 2_000));
+	execSync("mullvad relay set location us");
+	await new Promise((resolve) => setTimeout(resolve, 1500));
+
 	execSync("mullvad connect");
 	console.log("Connecting VPN");
-	await new Promise((resolve) => setTimeout(resolve, 2_000));
+	await new Promise((resolve) => setTimeout(resolve, 2000));
+
 	const newVPN = execSync("mullvad status", { encoding: "utf-8" });
 	console.log("New VPN:", newVPN);
 }
