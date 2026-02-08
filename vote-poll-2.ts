@@ -1,7 +1,7 @@
 import { exec, execSync } from "child_process";
 
 let count = 0;
-const maxCalls = 30;
+const maxCalls = 50;
 
 async function fetchAndUpdate() {
 	try {
@@ -41,7 +41,7 @@ async function fetchAndUpdate() {
 	count++;
 
 	if (count < maxCalls) {
-		setTimeout(fetchAndUpdate, 200);
+		setTimeout(fetchAndUpdate, 50);
 	} else {
 		console.log("Reached maximum calls. Updating VPN.");
 
@@ -59,7 +59,7 @@ async function updateMullvad() {
 
 	console.log("Updating Location VPN");
 	execSync("mullvad relay set location us");
-	await new Promise((resolve) => setTimeout(resolve, 1500));
+	await new Promise((resolve) => setTimeout(resolve, 1300));
 
 	execSync("mullvad connect");
 	console.log("Connecting VPN");
